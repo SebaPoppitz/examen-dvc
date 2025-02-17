@@ -5,3 +5,51 @@ stages:
     - src/data/import_raw_data.py
     outs:
     - data/raw_data/raw.csv
+  split:
+    cmd: python3 src/data/data_split.py
+    deps:
+    - src/data/data_split.py
+    - data/raw_data/raw.csv
+    outs:
+    - data/processed_data/X_train.csv
+    - data/processed_data/X_test.csv
+    - data/processed_data/y_train.csv
+    - data/processed_data/y_test.csv
+  normalize:
+    cmd: python3 src/data/normalize.py
+    deps:
+    - src/data/normalize.py
+    - data/raw_data/raw.csv
+    - data/processed_data/X_train.csv
+    - data/processed_data/X_test.csv
+    outs:
+    - data/processed_data/X_train_normalized.csv
+    - data/processed_data/X_test_normalized.csv
+  gridsearch:
+    cmd: python3 src/models/grid_search.py
+    deps:
+    - src/models/grid_search.py
+    - data/raw_data/raw.csv
+    - data/processed_data/X_train_normalized.csv
+    - data/processed_data/X_test_normalized.csv
+    - data/processed_data/y_train.csv
+    - data/processed_data/y_test.csv
+    outs:
+    - models/best_params.pkl
+  training:
+    cmd: python3 src/models/training.py
+    deps:
+    - src/models/training.py
+    - models/best_params.pkl
+    outs:
+    - models/gbr_model.pkl
+  evaluate:
+    cmd: python3 src/models/evaluate.py
+    deps:
+    - src/models/evaluate.py
+    - models/gbr_model.pkl
+    - data/processed_data/X_test_normalized.csv
+    - data/processed_data/y_test.csv
+    outs:
+    - metrics/scores.json
+    - data/predictions.csv

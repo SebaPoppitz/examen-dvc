@@ -9,8 +9,8 @@ from sklearn.metrics import mean_squared_error
 
 
 # Define paths
-DATA_PATH = "../../data/processed_data/"
-MODEL_PATH = "../../models/"
+DATA_PATH = "data/processed_data/"
+MODEL_PATH = "models/"
 
 
 def main():

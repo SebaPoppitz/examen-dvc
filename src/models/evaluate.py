@@ -5,10 +5,10 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error, r2_score
 
 # Define paths
-MODEL_PATH = "../../models/"
-DATA_PATH = "../../data/processed_data/"
-PREDICTIONS_PATH = "../../data/"
-METRICS_PATH = "../../metrics/"
+MODEL_PATH = "models/"
+DATA_PATH = "data/processed_data/"
+PREDICTIONS_PATH = "data/"
+METRICS_PATH = "metrics/"
 
 PREDICTIONS_FILENAME = os.path.join(PREDICTIONS_PATH, "predictions.csv")
 SCORES_FILENAME = os.path.join(METRICS_PATH, "scores.json")

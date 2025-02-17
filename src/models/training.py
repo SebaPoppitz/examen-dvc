@@ -3,8 +3,8 @@ import pickle
 import pandas as pd
 
 # Define model path
-MODEL_PATH = "../../models/"
-DATA_PATH = "../../data/processed_data/"
+MODEL_PATH = "models/"
+DATA_PATH = "data/processed_data/"
 TRAINED_MODEL_FILENAME = os.path.join(MODEL_PATH, "gbr_model.pkl")
 
 def main():

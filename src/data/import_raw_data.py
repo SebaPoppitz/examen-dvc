@@ -32,7 +32,7 @@ def import_raw_data(raw_data_relative_path, filename, bucket_folder_url):
 
 
 # Main function that sets default values and calls import_raw_data
-def main(raw_data_relative_path="../../data/raw_data", 
+def main(raw_data_relative_path="data/raw_data", 
          filename="raw.csv",
          bucket_folder_url="https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/"):
     """Download a single file from an AWS S3 bucket and save it in ./data/raw"""
