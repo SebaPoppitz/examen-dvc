@@ -1,0 +1,7 @@
+stages:
+  load:
+    cmd: python3 src/data/import_raw_data.py
+    deps:
+    - src/data/import_raw_data.py
+    outs:
+    - data/raw_data/raw.csv

@@ -1,0 +1,146 @@
+schema: '2.0'
+stages:
+  load:
+    cmd: python3 src/data/import_raw_data.py
+    deps:
+    - path: src/data/import_raw_data.py
+      hash: md5
+      md5: ed50c1d6d2427b21cb7d9344707f86a0
+      size: 1974
+    outs:
+    - path: data/raw_data/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+  split:
+    cmd: python3 src/data/data_split.py
+    deps:
+    - path: data/raw_data/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+    - path: src/data/data_split.py
+      hash: md5
+      md5: 20be09b24da431dc26c9ce41f25f36b0
+      size: 1929
+    outs:
+    - path: data/processed_data/X_test.csv
+      hash: md5
+      md5: b2af62a7e108b077aec89fa2622996db
+      size: 52624
+    - path: data/processed_data/X_train.csv
+      hash: md5
+      md5: 535251fa6c1a1d098cc7a36e0bd62f38
+      size: 209468
+    - path: data/processed_data/y_test.csv
+      hash: md5
+      md5: a051d29629c8bbb4cfb7e85c7f0315da
+      size: 6456
+    - path: data/processed_data/y_train.csv
+      hash: md5
+      md5: a9cd9d91da89f732843d72548f64ded3
+      size: 25951
+  normalize:
+    cmd: python3 src/data/normalize.py
+    deps:
+    - path: data/processed_data/X_test.csv
+      hash: md5
+      md5: b2af62a7e108b077aec89fa2622996db
+      size: 52624
+    - path: data/processed_data/X_train.csv
+      hash: md5
+      md5: 535251fa6c1a1d098cc7a36e0bd62f38
+      size: 209468
+    - path: data/raw_data/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+    - path: src/data/normalize.py
+      hash: md5
+      md5: 100c0cd1f48dbd9381b974d71e5d24f8
+      size: 1894
+    outs:
+    - path: data/processed_data/X_test_normalized.csv
+      hash: md5
+      md5: 5e079189af6bd091d651a89fafb1c290
+      size: 57026
+    - path: data/processed_data/X_train_normalized.csv
+      hash: md5
+      md5: c1b80eb7f083888b625dd0369cf381f8
+      size: 227497
+  gridsearch:
+    cmd: python3 src/models/grid_search.py
+    deps:
+    - path: data/processed_data/X_test_normalized.csv
+      hash: md5
+      md5: 5e079189af6bd091d651a89fafb1c290
+      size: 57026
+    - path: data/processed_data/X_train_normalized.csv
+      hash: md5
+      md5: c1b80eb7f083888b625dd0369cf381f8
+      size: 227497
+    - path: data/processed_data/y_test.csv
+      hash: md5
+      md5: a051d29629c8bbb4cfb7e85c7f0315da
+      size: 6456
+    - path: data/processed_data/y_train.csv
+      hash: md5
+      md5: a9cd9d91da89f732843d72548f64ded3
+      size: 25951
+    - path: data/raw_data/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+    - path: src/models/grid_search.py
+      hash: md5
+      md5: aff0b6c740f9e5b858718b526b78727a
+      size: 3475
+    outs:
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 3363d9c98f7c29bb5b6180a2d0368f4b
+      size: 3839893
+  training:
+    cmd: python3 src/models/training.py
+    deps:
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 3363d9c98f7c29bb5b6180a2d0368f4b
+      size: 3839893
+    - path: src/models/training.py
+      hash: md5
+      md5: bea0c18f505df58b0fc125550f7fce92
+      size: 1813
+    outs:
+    - path: models/gbr_model.pkl
+      hash: md5
+      md5: c10d3c1481c18d02a67cd7a5cadc9e61
+      size: 3871054
+  evaluate:
+    cmd: python3 src/models/evaluate.py
+    deps:
+    - path: data/processed_data/X_test_normalized.csv
+      hash: md5
+      md5: 5e079189af6bd091d651a89fafb1c290
+      size: 57026
+    - path: data/processed_data/y_test.csv
+      hash: md5
+      md5: a051d29629c8bbb4cfb7e85c7f0315da
+      size: 6456
+    - path: models/gbr_model.pkl
+      hash: md5
+      md5: c10d3c1481c18d02a67cd7a5cadc9e61
+      size: 3871054
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: 690dccfc23701c9701d7ae61465065c2
+      size: 2717
+    outs:
+    - path: data/predictions.csv
+      hash: md5
+      md5: 12158e6a8d02936dd09695c1ceb8af66
+      size: 6784
+    - path: metrics/scores.json
+      hash: md5
+      md5: 0d31e1d4b88b42709d83e96f7650b969
+      size: 85
